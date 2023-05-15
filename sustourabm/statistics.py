@@ -1,26 +1,90 @@
+import numpy as np
 import pandas as pd
 
 
 class SimulationStatistics:
-    def __init__(self, results, num_destinations):
+    def __init__(self, results, num_destinations, track_agents=False):
+
+        self.track_agents = track_agents
         self.raw_results = self.__calculate_raw_results(results,
                                                         num_destinations)
         self.summary_results = self.__summarise_results(self.raw_results,
                                                         'Step')
 
-    @staticmethod
-    def __calculate_raw_results(results, num_destinations):
-        arrival_names = ['Arrivals ' + str(i) for i in range(num_destinations)]
-        column_names = ['seed', 'Step'] + arrival_names
-        df = pd.DataFrame(results)[column_names].sort_values(
-            by=['seed', 'Step'])
-        num_tourists = df[arrival_names].sum(axis=1)
-        df.insert(2, 'Num tourists', num_tourists)
-        for dest in range(num_destinations):
-            df['Share ' + str(dest)] = df[arrival_names[dest]] / df[
-                'Num tourists']
+    def __calculate_raw_results(self, results, num_destinations):
+        arrival_columns = ['Arrivals ' + str(i) for i in
+                           range(num_destinations)]
+        base_columns = ['seed', 'Step']
+        general_columns = base_columns + arrival_columns
 
-        return df
+        if self.track_agents:
+            agent_columns = base_columns + ['AgentID', 'Choice']
+            agent_results = []
+            general_results = []
+
+            for result in results:
+                if 'AgentID' in result:
+                    if result['AgentID'] == 0:
+                        general_results.append(
+                            {key: result.get(key) for key in general_columns})
+                    agent_results.append(
+                        {key: result.get(key) for key in agent_columns})
+                else:
+                    general_results.append(
+                        {key: result.get(key) for key in general_columns})
+
+            general_results = pd.DataFrame(general_results).sort_values(
+                by=['seed', 'Step']).reset_index()
+            agent_results = pd.DataFrame(agent_results).sort_values(
+                by=['seed', 'Step', 'AgentID']).reset_index()
+
+            seeds = general_results['seed'].unique()
+            steps = general_results['Step'].unique()
+
+            # Crear una matriz para almacenar los resultados de conteo
+            counts = np.zeros(
+                (len(steps) * len(seeds), num_destinations, num_destinations))
+
+            # Iterar sobre los valores únicos de 'seed' y 'Step'
+            for seed in seeds:
+                base_filter = (agent_results['seed'] == seed)
+                for step in steps[2:]:
+                    filter_1 = base_filter & (
+                            agent_results['Step'] == step - 1)
+                    filter_2 = base_filter & (agent_results['Step'] == step)
+
+                    pairs = agent_results[filter_1].merge(
+                        agent_results[filter_2], on=['seed', 'AgentID'],
+                        suffixes=('_1', '_2'))
+
+                    if not pairs.empty:
+                        counts_idx = seed * len(steps) + step - 1
+                        counts[counts_idx] = pd.crosstab(pairs['Choice_1'],
+                                                         pairs['Choice_2'],
+                                                         dropna=False).values
+
+            column_names = [str(origin) + 'to' + str(destination) for origin in
+                            range(num_destinations) for destination in
+                            range(num_destinations)]
+
+            temp_df = pd.DataFrame(counts.reshape(-1, num_destinations ** 2),
+                                   columns=column_names)
+            general_results = pd.concat([general_results, temp_df], axis=1)
+
+        else:
+            general_results = pd.DataFrame(results)[
+                general_columns].sort_values(by=['seed', 'Step'])
+
+        num_tourists = general_results[arrival_columns].sum(axis=1)
+        general_results.insert(2, 'Num tourists', num_tourists)
+        for dest in range(num_destinations):
+            general_results['Share ' + str(dest)] = general_results[
+                                                        arrival_columns[
+                                                            dest]] / \
+                                                    general_results[
+                                                        'Num tourists']
+
+        return general_results
 
     @staticmethod
     def __summarise_results(results, column):

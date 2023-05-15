@@ -279,7 +279,11 @@ class Tourist(Agent):
         super().__init__(unique_id, model)
 
         self.current_destination: int = -1
-        self.preferences = preferences / preferences.sum()
+
+        if preferences.sum() == 0:
+            self.preferences = np.zeros(preferences.shape)
+        else:
+            self.preferences = preferences / preferences.sum()
 
     def calculate_preference(self, destination: Destination) -> float:
         """Calculate the preference value of the tourist for the given 
