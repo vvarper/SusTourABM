@@ -160,6 +160,9 @@ cython_debug/
 #.idea/
 
 miscellaneous/
-data/instances/instances_real/
+data/instances/original/
+data/instances/calibrated/
+data/instances/calibrated_onlystates/
 data/base_data/impacts_rcp*
+*outputs_with_agents/
 .idea/

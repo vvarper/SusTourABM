@@ -14,4 +14,5 @@ def rmse(y_true, y_pred):
 
 
 def r2(y_true, y_pred):
-    return 1 - (((y_true - y_pred) ** 2).sum() / ((y_true - y_true.mean()) ** 2).sum())
+    return 1 - (((y_true - y_pred) ** 2).sum() / (
+                (y_true - y_true.mean()) ** 2).sum())

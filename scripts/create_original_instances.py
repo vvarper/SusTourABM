@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from sustourabm.utils import save_model_instance
-from sustourabm.utils import totuple
+from sustourabm.util.io import save_model_instance
+from sustourabm.util.io import totuple
 
 impact_ranges = {'Infectious diseases': [0, 100], 'Heat waves': [0, 365],
                  'Beaches availability': [0, 1],
@@ -83,9 +83,9 @@ params = {"state_by_destination_step_factor": states_rcp26,
 rcp26_instance = {"climate_factors": climate_factors,
                   "destinations": destinations, "abm_parameters": params}
 
-output_filename = 'data/instances/instances_real/rcp26_instance.json'
+output_filename = 'data/instances/original/rcp26_instance.json'
 save_model_instance(output_filename, climate_factors, destinations, params)
 
 params['state_by_destination_step_factor'] = states_rcp85
-output_filename = 'data/instances/instances_real/rcp85_instance.json'
+output_filename = 'data/instances/original/rcp85_instance.json'
 save_model_instance(output_filename, climate_factors, destinations, params)

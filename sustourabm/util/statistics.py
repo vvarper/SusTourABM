@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from sustourabm.util.io import save_simulation_output
+
 
 class SimulationStatistics:
     def __init__(self, results, num_destinations, track_agents=False):
@@ -34,9 +36,12 @@ class SimulationStatistics:
                         {key: result.get(key) for key in general_columns})
 
             general_results = pd.DataFrame(general_results).sort_values(
-                by=['seed', 'Step']).reset_index()
+                by=['seed', 'Step']).reset_index(drop=True)
+
             agent_results = pd.DataFrame(agent_results).sort_values(
-                by=['seed', 'Step', 'AgentID']).reset_index()
+                by=['seed', 'Step', 'AgentID']).reset_index(drop=True)
+
+            self.agent_results = agent_results
 
             seeds = general_results['seed'].unique()
             steps = general_results['Step'].unique()
@@ -74,6 +79,7 @@ class SimulationStatistics:
         else:
             general_results = pd.DataFrame(results)[
                 general_columns].sort_values(by=['seed', 'Step'])
+            self.agent_results = None
 
         num_tourists = general_results[arrival_columns].sum(axis=1)
         general_results.insert(2, 'Num tourists', num_tourists)
@@ -102,3 +108,25 @@ class SimulationStatistics:
         summary_df.loc['max'] = df_max
 
         return summary_df
+
+    def save(self, base_output_folder, instance_name, simulation_config):
+
+        if self.track_agents:
+            raw_output_path = base_output_folder + 'raw_outputs_with_agents/' + instance_name + '_rawout.json'
+            agents_output_path = base_output_folder + 'raw_outputs_with_agents/' + instance_name + '_rawout_agents.json'
+            summary_output_path = base_output_folder + 'summary_outputs_with_agents/' + instance_name + '_sumout.json'
+        else:
+            raw_output_path = base_output_folder + 'raw_outputs/' + instance_name + '_rawout.json'
+            summary_output_path = base_output_folder + 'summary_outputs/' + instance_name + '_sumout.json'
+
+        save_simulation_output(raw_output_path, instance_name,
+                               simulation_config,
+                               self.raw_results.to_dict())
+        save_simulation_output(summary_output_path, instance_name,
+                               simulation_config,
+                               self.summary_results.to_dict())
+
+        if self.track_agents:
+            save_simulation_output(agents_output_path, instance_name,
+                                   simulation_config,
+                                   self.agent_results.to_dict())
