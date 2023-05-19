@@ -18,11 +18,12 @@ try:
     policy_start = int(sys.argv[4])
     mc = int(sys.argv[5])
     num_processes = int(sys.argv[6])
+    num_agents = int(sys.argv[7])
 
 except IndexError:
     print(
-        "{0} <instance> <destination_id> <n> <start> <mc> <num_processes>".format(
-            sys.argv[0]))
+        "{0} <instance> <destination_id> <n> <start> <mc> <num_processes> "
+        "<num_agents>".format(sys.argv[0]))
     sys.exit(1)
 
 # Example from SALib ##########################################################
@@ -32,6 +33,7 @@ instance_path = 'data/instances/' + instance + '.json'
 instance_name = os.path.split(instance)[1].replace('_instance', '')
 parameters, climate_factors, destinations = load_model_instance_from_json(
     instance_path)
+parameters['num_tourists'] = num_agents
 
 problem = ClimaticPolicy(destination_id, destinations[destination_id],
                          climate_factors, parameters, policy_start,
