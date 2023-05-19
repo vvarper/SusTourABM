@@ -21,9 +21,8 @@ try:
     num_agents = int(sys.argv[7])
 
 except IndexError:
-    print(
-        "{0} <instance> <destination_id> <n> <start> <mc> <num_processes> "
-        "<num_agents>".format(sys.argv[0]))
+    print("{0} <instance> <destination_id> <n> <start> <mc> <num_processes> "
+          "<num_agents>".format(sys.argv[0]))
     sys.exit(1)
 
 # Example from SALib ##########################################################
@@ -62,9 +61,18 @@ np.savetxt(eval_output, Y)
 
 Si = sobol_analyze.analyze(problem.problem, Y, print_to_console=True)
 
-Si.plot()
+fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+ax.errorbar(range(len(Si['S1'])), Si['S1'], yerr=Si['S1_conf'], color='red',
+            marker='o', ecolor='black', linestyle='none', capsize=5, )
+ax.set_xticks(range(len(Si['S1'])))
+ax.set_xticklabels(problem.problem['names'], rotation=90)
+ax.set_ylabel('First-order sensitivity')
+ax.set_ylim([0, 1])
+ax.set_title('Sobol first-order sensitivity')
+plt.tight_layout()
 plot_output = f'data/sensitivity_analysis/sobol_n{n}_{instance_name}' \
               f'_{destinations[destination_id]}_{policy_start}' \
               f'_{mc}_{num_processes}.png'
+
 os.makedirs(os.path.dirname(plot_output), exist_ok=True)
 plt.savefig(plot_output)
