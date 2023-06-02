@@ -38,12 +38,16 @@ problem = ClimaticPolicy(destination_id, destinations[destination_id],
                          climate_factors, parameters, policy_start,
                          parameters['num_steps'], mc, num_processes)
 
-# Generate parameter samples ##################################################
+# Load/Generate parameter samples #############################################
 
-param_values = sobol_sample.sample(problem.problem, n, seed=seed)
 sample_output = f'data/sensitivity_analysis/sample_params_n{n}.txt'
-os.makedirs(os.path.dirname(sample_output), exist_ok=True)
-np.savetxt(sample_output, param_values)
+
+if os.path.exists(sample_output):
+    param_values = np.loadtxt(sample_output)
+else:
+    param_values = sobol_sample.sample(problem.problem, n, seed=seed)
+    os.makedirs(os.path.dirname(sample_output), exist_ok=True)
+    np.savetxt(sample_output, param_values)
 
 # Evaluate the parameters of the sample #######################################
 
