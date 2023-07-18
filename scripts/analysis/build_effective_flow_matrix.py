@@ -7,12 +7,12 @@ import pandas as pd
 try:
     instance = sys.argv[1]
 except IndexError:
-    print(
-        "{0} <instance>".format(sys.argv[0]))
+    print("{0} <instance>".format(sys.argv[0]))
     sys.exit(1)
 
 instance_name = os.path.split(instance)[1].replace('_instance', '')
-matrix_flow_file = 'data/results/instances_output/summary_outputs/' + instance_name + '_flowmatrix2020to2050.csv'
+matrix_flow_file = f'data/results/instances_output/summary_outputs/' \
+                   f'{instance_name}_flowmatrix2020to2050.csv'
 
 # Load matrix_flow_data as dataframe
 matrix_flow_data = pd.read_csv(matrix_flow_file, index_col=0)
@@ -40,6 +40,8 @@ matrix_flow_data = pd.DataFrame(matrix_flow_data)
 matrix_flow_data.columns = col_names
 matrix_flow_data.index = row_names
 
-effective_matrix_flow_file = 'data/results/instances_output/summary_outputs/' + instance_name + '_effective_flowmatrix2020to2050.csv'
+effective_matrix_flow_file = f'data/results/instances_output/' \
+                             f'summary_outputs/{instance_name}' \
+                             f'_effective_flowmatrix2020to2050.csv'
 
 matrix_flow_data.to_csv(effective_matrix_flow_file, index=True)

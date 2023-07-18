@@ -14,8 +14,8 @@ class SimulationStatistics:
                                                         'Step')
 
     def __calculate_raw_results(self, results, num_destinations):
-        arrival_columns = ['Arrivals ' + str(i) for i in
-                           range(num_destinations)]
+
+        arrival_columns = [f'Arrivals {i}' for i in range(num_destinations)]
         base_columns = ['seed', 'Step']
         general_columns = base_columns + arrival_columns
 
@@ -84,11 +84,9 @@ class SimulationStatistics:
         num_tourists = general_results[arrival_columns].sum(axis=1)
         general_results.insert(2, 'Num tourists', num_tourists)
         for dest in range(num_destinations):
-            general_results['Share ' + str(dest)] = general_results[
-                                                        arrival_columns[
-                                                            dest]] / \
-                                                    general_results[
-                                                        'Num tourists']
+            general_results[f'Share {dest}'] = general_results[
+                                                   arrival_columns[dest]] / \
+                                               general_results['Num tourists']
 
         return general_results
 
@@ -112,21 +110,24 @@ class SimulationStatistics:
     def save(self, base_output_folder, instance_name, simulation_config):
 
         if self.track_agents:
-            raw_output_path = base_output_folder + 'raw_outputs_with_agents/' + instance_name + '_rawout.json'
-            agents_output_path = base_output_folder + 'raw_outputs_with_agents/' + instance_name + '_rawout_agents.json'
-            summary_output_path = base_output_folder + 'summary_outputs_with_agents/' + instance_name + '_sumout.json'
-        else:
-            raw_output_path = base_output_folder + 'raw_outputs/' + instance_name + '_rawout.json'
-            summary_output_path = base_output_folder + 'summary_outputs/' + instance_name + '_sumout.json'
+            raw_output_path = f'{base_output_folder}raw_outputs_with_agents/' \
+                              f'{instance_name}_rawout.json'
+            agents_output_path = f'{base_output_folder}raw_outputs_with' \
+                                 f'_agents/{instance_name}_rawout_agents.json'
+            summary_output_path = f'{base_output_folder}summary_outputs_with' \
+                                  f'_agents/{instance_name}_sumout.json'
 
-        save_simulation_output(raw_output_path, instance_name,
-                               simulation_config,
-                               self.raw_results.to_dict())
-        save_simulation_output(summary_output_path, instance_name,
-                               simulation_config,
-                               self.summary_results.to_dict())
-
-        if self.track_agents:
             save_simulation_output(agents_output_path, instance_name,
                                    simulation_config,
                                    self.agent_results.to_dict())
+        else:
+            raw_output_path = f'{base_output_folder}raw_outputs/' \
+                              f'{instance_name}_rawout.json'
+            summary_output_path = f'{base_output_folder}summary_outputs/' \
+                                  f'{instance_name}_sumout.json'
+
+        save_simulation_output(raw_output_path, instance_name,
+                               simulation_config, self.raw_results.to_dict())
+        save_simulation_output(summary_output_path, instance_name,
+                               simulation_config,
+                               self.summary_results.to_dict())

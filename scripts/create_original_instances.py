@@ -2,13 +2,12 @@ import numpy as np
 import pandas as pd
 
 from sustourabm.util.io import save_model_instance
-from sustourabm.util.io import totuple
+from sustourabm.util.io import to_tuple
 
 impact_ranges = {'Infectious diseases': [0, 100], 'Heat waves': [0, 365],
-                 'Beaches availability': [0, 1],
-                 'Water shortages': [0, 5], 'Forest fires': [0, 1],
-                 'Marine habitats': [0, 1], 'Land habitats': [0, 1],
-                 'Infrastructure damage': [0, 1],
+                 'Beaches availability': [0, 1], 'Water shortages': [0, 5],
+                 'Forest fires': [0, 1], 'Marine habitats': [0, 1],
+                 'Land habitats': [0, 1], 'Infrastructure damage': [0, 1],
                  'Cultural heritage damage': [0, 1], 'Attractiveness': [0, 1]}
 
 
@@ -51,9 +50,9 @@ scaled_rcp85 = scale_impact_factors(df_rcp85)
 climate_factors = tuple(scaled_rcp26['Impact'].unique())
 destinations = tuple(df_rcp26['Destination'].unique())
 
-states_rcp26 = totuple(
+states_rcp26 = to_tuple(
     create_states_by_destination_step_factor(scaled_rcp26, destinations))
-states_rcp85 = totuple(
+states_rcp85 = to_tuple(
     create_states_by_destination_step_factor(scaled_rcp85, destinations))
 
 df_mean_tourist_preferences_by_factor = pd.read_csv(

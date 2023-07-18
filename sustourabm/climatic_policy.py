@@ -1,10 +1,10 @@
 import numpy as np
 
 from sustourabm.runner import simulate
-from sustourabm.util.io import totuple
+from sustourabm.util.io import to_tuple
 
 
-class ClimaticPolicy():
+class ClimaticPolicy:
 
     def __init__(self, destination_id, destination_name, factors_names,
                  instance_parameters, policy_start, policy_end, mc,
@@ -45,11 +45,12 @@ class ClimaticPolicy():
                                    0)
         new_final_share = solution * deterioration + original_start_share
 
-        states[self.destination_id,
-        self.policy_start:self.policy_end] = np.linspace(original_start_share,
-                                                         new_final_share,
-                                                         self.policy_end - self.policy_start)
+        states[self.destination_id, self.policy_start:self.policy_end] = \
+            np.linspace(original_start_share,
+                        new_final_share,
+                        self.policy_end - self.policy_start)
+
         policy_parameters['state_by_destination_step_factor'] = [
-            totuple(states)]
+            to_tuple(states)]
 
         return policy_parameters

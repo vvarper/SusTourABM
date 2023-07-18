@@ -7,14 +7,14 @@ from jmetal.util.generator import InjectorGenerator
 from jmetal.util.observer import BasicObserver
 from jmetal.util.termination_criterion import StoppingByEvaluations
 
-from sustourabm.calibration.algorithm import HillClimbing
 from sustourabm.calibration.algorithm_solutions_explorer import \
     get_best_solution
 from sustourabm.calibration.chromosome_map import \
     define_factors_5_dest_states_map
 from sustourabm.calibration.metrics import mape
+from sustourabm.calibration.optimization.algorithm import HillClimbing
 from sustourabm.calibration.problem import ABMCalibrationProblem
-from sustourabm.util.io import totuple, load_history_from_csv, \
+from sustourabm.util.io import to_tuple, load_history_from_csv, \
     load_model_instance_from_json, save_dict2json
 
 # Process arguments from command line #########################################
@@ -53,9 +53,9 @@ parameters, climate_factors, destinations = load_model_instance_from_json(
 parameters['num_steps'] = 20
 parameters['num_tourists'] = num_agents
 states = np.array(parameters['state_by_destination_step_factor'][0])[:, :20, :]
-parameters['state_by_destination_step_factor'] = [totuple(states)]
+parameters['state_by_destination_step_factor'] = [to_tuple(states)]
 
-# Load share history ###########################################################
+# Load share history ##########################################################
 
 history = load_history_from_csv(history_path)
 
@@ -122,8 +122,8 @@ for instance in ['rcp26_instance', 'rcp85_instance']:
                                     chromosome_map, real_ranges, int_ranges,
                                     metric)
 
-    calibration_info['real_solution'] = list(problem.integer_to_real_solution(
-        final_solution.variables))
+    calibration_info['real_solution'] = list(
+        problem.integer_to_real_solution(final_solution.variables))
 
     real_calibrated_parameters = problem.decode_solution(
         final_solution.variables)
@@ -141,7 +141,8 @@ for instance in ['rcp26_instance', 'rcp85_instance']:
     if calibrate_factors:
         solution_path = f'data/instances/calibrated/calibrated_{instance}.json'
     else:
-        solution_path = f'data/instances/calibrated_onlystates/calibrated_{instance}_onlystates.json'
+        solution_path = f'data/instances/calibrated_onlystates/calibrated' \
+                        f'_{instance}_onlystates.json'
 
     save_dict2json(calibrated_instance_data, solution_path, indent=4,
                    sort_keys=True)

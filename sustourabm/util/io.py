@@ -10,11 +10,11 @@ import pandas as pd
 # GENERAL FUNCTIONS
 
 
-def totuple(list: list):
+def to_tuple(items: list):
     try:
-        return tuple(totuple(i) for i in list)
+        return tuple(to_tuple(i) for i in items)
     except TypeError:
-        return list
+        return items
 
 
 ###############################################################################
@@ -30,7 +30,7 @@ def load_model_instance_from_json(input_filename):
 
     for key in parameters:
         if type(parameters[key]) == list:
-            parameters[key] = [totuple(parameters[key])]
+            parameters[key] = [to_tuple(parameters[key])]
 
     return parameters, climate_factors, destinations
 

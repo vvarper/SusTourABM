@@ -4,7 +4,7 @@ import numpy as np
 from jmetal.core.problem import IntegerProblem
 
 from sustourabm.runner import simulate
-from sustourabm.util.io import totuple
+from sustourabm.util.io import to_tuple
 
 
 class ABMCalibrationProblem(IntegerProblem):
@@ -79,10 +79,9 @@ class ABMCalibrationProblem(IntegerProblem):
             if isinstance(self.chromosome_map[i], tuple):
 
                 parameter_name = self.chromosome_map[i][0]
-                new_tuple = np.array(
-                    complete_solution[parameter_name][0])
+                new_tuple = np.array(complete_solution[parameter_name][0])
 
-                if (parameter_name == 'state_by_destination_step_factor'):
+                if parameter_name == 'state_by_destination_step_factor':
                     destination = self.chromosome_map[i][1]
                     factor = self.chromosome_map[i][2]
                     new_tuple[destination, :, factor] = np.clip(
@@ -92,7 +91,7 @@ class ABMCalibrationProblem(IntegerProblem):
                 else:
                     new_tuple[self.chromosome_map[i][1]] = real_solution[i]
 
-                complete_solution[parameter_name] = [totuple(new_tuple)]
+                complete_solution[parameter_name] = [to_tuple(new_tuple)]
 
             else:
                 parameter_name = self.chromosome_map[i]
@@ -116,7 +115,7 @@ class ABMCalibrationProblem(IntegerProblem):
             for dest in range(self.model_parameters['num_destinations']):
                 dest_fitness[dest] = self.compute_time_series_fitness(
                     self.history_by_destination[dest],
-                    results_mc['Share ' + str(dest)].to_numpy())
+                    results_mc[f'Share {dest}'].to_numpy())
 
             mc_fitnesses[mc] = dest_fitness.mean()
 

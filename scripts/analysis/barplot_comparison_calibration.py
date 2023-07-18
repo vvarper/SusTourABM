@@ -27,8 +27,7 @@ def get_experiment_total_share(output_file, destinations):
 
         # Get share per seed and calculate mean for each destination
         total_shares = year_rawout[arrival_columns].divide(
-            year_rawout['Total'],
-            axis=0).mean()
+            year_rawout['Total'], axis=0).mean()
 
         # Rename columns to destination names (readability)
         total_shares.rename(
@@ -49,7 +48,7 @@ history_path = 'data/base_data/history_arrivals.csv'
 plot_folder = 'data/results/instances_output/plots/'
 solutions = [f'calibrated_{rcp}', rcp]
 
-################################################################################
+###############################################################################
 
 # 1. Load history data
 history = pd.read_csv(history_path, index_col=0)
@@ -66,7 +65,8 @@ destinations = list(history_total_shares.index)
 total_shares = pd.DataFrame(history_total_shares.rename('History'))
 for solution in solutions:
     # Get experiment output file (year raw)
-    output_file = f'data/results/instances_output/raw_outputs/{solution}_rawout.json'
+    output_file = f'data/results/instances_output/raw_outputs/{solution}' \
+                  f'_rawout.json'
 
     # Calculate total shares (given alpha) and join to dataframe
     config_share = get_experiment_total_share(output_file, destinations)
@@ -74,7 +74,7 @@ for solution in solutions:
 
 total_shares.columns = ['History', 'Calibrated Solution', 'Initial Solution']
 
-# Build figure for given paramter config
+# Build figure for given parameter config
 fig = total_shares.plot.bar(rot=0, figsize=(10, 5))
 fig.set_ylabel('Total share (2010-2019)')
 fig.set_xlabel('Destination')

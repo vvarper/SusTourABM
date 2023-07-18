@@ -13,9 +13,9 @@ from jmetal.util.generator import Generator, InjectorGenerator
 from jmetal.util.observer import BasicObserver
 from jmetal.util.termination_criterion import TerminationCriterion
 
-from sustourabm.calibration.neighborhood_generator import \
+from sustourabm.calibration.optimization.neighborhood_generator import \
     OneStepIntegerNeighborOperator
-from sustourabm.calibration.termination_criterion import \
+from sustourabm.calibration.optimization.termination_criterion import \
     StoppingByEvaluationsOrLocalOptimum
 
 
@@ -131,7 +131,8 @@ class IteratedLocalSearch(Algorithm[IntegerSolution, IntegerSolution]):
 
     def run_local_search(self, solution: IntegerSolution):
         self.local_search = HillClimbing(problem=self.problem,
-                                         max_evaluations=self.local_search_evaluations,
+                                         max_evaluations=
+                                         self.local_search_evaluations,
                                          solution_generator=InjectorGenerator(
                                              [solution]))
 

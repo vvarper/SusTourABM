@@ -7,7 +7,7 @@ library(circlize)
 library(chorddiag)  #devtools::install_github("mattflor/chorddiag")
 
 # Load dataset
-data <- read.csv('data/results/instances_output/summary_outputs/rcp26_flowmatrix2020to2050.csv', row.names = 1, header= TRUE)
+data <- read.csv('data/results/instances_output/summary_outputs/rcp85_effective_flowmatrix2020to2050.csv', row.names = 1, header= TRUE)
 
 data_long <- data %>%
   rownames_to_column %>%

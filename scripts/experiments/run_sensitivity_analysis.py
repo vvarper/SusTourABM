@@ -6,7 +6,7 @@ from SALib.analyze import sobol as sobol_analyze
 from SALib.sample import sobol as sobol_sample
 from matplotlib import pyplot as plt
 
-from sustourabm.climatic_policy.climatic_policy import ClimaticPolicy
+from sustourabm.climatic_policy import ClimaticPolicy
 from sustourabm.util.io import load_model_instance_from_json
 
 # Process arguments from command line #########################################
@@ -28,7 +28,7 @@ except IndexError:
 # Example from SALib ##########################################################
 
 seed = 121
-instance_path = 'data/instances/' + instance + '.json'
+instance_path = f'data/instances/{instance}.json'
 instance_name = os.path.split(instance)[1].replace('_instance', '')
 parameters, climate_factors, destinations = load_model_instance_from_json(
     instance_path)
@@ -40,7 +40,7 @@ problem = ClimaticPolicy(destination_id, destinations[destination_id],
 
 # Load/Generate parameter samples #############################################
 
-sample_output = f'data/sensitivity_analysis/sample_params_n{n}.txt'
+sample_output = f'data/results/sensitivity_analysis/sample_params_n{n}.txt'
 
 if os.path.exists(sample_output):
     param_values = np.loadtxt(sample_output)
@@ -55,9 +55,9 @@ Y = np.zeros([param_values.shape[0]])
 for i, X in enumerate(param_values):
     Y[i] = problem.evaluate(X)
 
-eval_output = f'data/sensitivity_analysis/sample_evals_n{n}_{instance_name}' \
-              f'_{destinations[destination_id]}_{policy_start}' \
-              f'_{mc}_{num_processes}.txt'
+eval_output = f'data/results/sensitivity_analysis/sample_evals_n{n}' \
+              f'_{instance_name}_{destinations[destination_id]}' \
+              f'_{policy_start}_{mc}_{num_processes}.txt'
 os.makedirs(os.path.dirname(eval_output), exist_ok=True)
 np.savetxt(eval_output, Y)
 
@@ -74,7 +74,7 @@ ax.set_ylabel('First-order sensitivity')
 ax.set_ylim([0, 1])
 ax.set_title('Sobol first-order sensitivity')
 plt.tight_layout()
-plot_output = f'data/sensitivity_analysis/sobol_n{n}_{instance_name}' \
+plot_output = f'data/results/sensitivity_analysis/sobol_n{n}_{instance_name}' \
               f'_{destinations[destination_id]}_{policy_start}' \
               f'_{mc}_{num_processes}.png'
 

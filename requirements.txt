@@ -5,3 +5,5 @@ pandas
 scipy
 matplotlib
 jmetalpy
+salib
+holoviews

@@ -8,9 +8,8 @@ from matplotlib import pyplot as plt
 
 
 def convert_df_to_multiindex(df: pd.DataFrame) -> pd.DataFrame:
-    columns = [
-        re.sub(r'\'|\(|\)', '', column).split(', ') for column in df.columns
-    ]
+    columns = [re.sub(r'\'|\(|\)', '', column).split(', ') for column in
+               df.columns]
 
     second_level_size = len(set([column[1] for column in columns]))
     first_level = [column[0] for column in columns[::second_level_size]]
@@ -27,10 +26,11 @@ except IndexError:
     print("{0} <instance>".format(sys.argv[0]))
     sys.exit(1)
 
-instance_path = 'data/instances/' + instance + '.json'
+instance_path = f'data/instances/{instance}.json'
 instance_name = os.path.split(instance)[1].replace('_instance', '')
 plot_folder = 'data/results/instances_output/plots/'
-output_file = f'data/results/instances_output/summary_outputs/{instance_name}_sumout.json'
+output_file = f'data/results/instances_output/summary_outputs/' \
+              f'{instance_name}_sumout.json'
 
 # Load instance data (destinations) ###########################################
 with open(instance_path) as json_file:
@@ -58,8 +58,7 @@ with open(output_file) as json_file:
 fig = results.transpose().plot.bar(rot=0, figsize=(10, 5))
 fig.set_ylabel('Share')
 fig.set_xlabel('Destination')
-fig.set_title(
-    f'Share per destination in {instance_name} configuration\n')
+fig.set_title(f'Share per destination in {instance_name} configuration\n')
 
 # Save figure
 figure_path = f'{plot_folder}{instance_name}_2020to2050_barplot_comparison.png'
@@ -76,7 +75,8 @@ fig = difference.plot.bar(rot=0, figsize=(10, 5), width=0.9,
 fig.set_ylabel('Share difference')
 fig.set_xlabel('Destination')
 fig.set_title(
-    f'Share difference per destination between 2020 and 2049 in {instance_name} configuration\n')
+    f'Share difference per destination between 2020 and 2049 in '
+    f'{instance_name} configuration\n')
 
 for i, val in enumerate(difference):
     if val >= 0:
