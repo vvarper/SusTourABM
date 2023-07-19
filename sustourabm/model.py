@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 class Destination:
     """Class for the tourist destinations.
 
-    The state of a destination is determined by 10 factors:
+    The state of a destination is determined by 10 aspects or factors:
         1. infectious_diseases
         2. heat_waves
         3. beach_loss
@@ -27,7 +27,7 @@ class Destination:
         7. terrestrial_habitats
         8. infrastructures
         9. cultural_heritage
-        10. price
+        10. attractiveness
 
     Attributes
     ----------
@@ -47,7 +47,7 @@ class Destination:
 
 
 class SustainableTourismModel(Model):
-    """ Agent-based model for a sustainable tourism scenario.
+    """Agent-based model class for a sustainable tourism scenario.
 
     Attributes
     ----------
@@ -59,26 +59,28 @@ class SustainableTourismModel(Model):
         Number of simulation steps.
     current_step: int
         Current simulation step.
+    random: np.random.Generator
+        Random number generator.
     destinations : list[Destination]
         List of tourist destinations.
     schedule : RandomActivation
         Scheduler of the tourist agents
-    running: bool
-        Flag indicating if the simulation is running.
     datacollector: DataCollector
         Data collector for the simulation.
+    running: bool
+        Flag indicating if the simulation is running.
     """
 
     def __init__(
             self,
             state_by_destination_step_factor: tuple[tuple[
-                tuple[float]]],  # float[num_destinations][num_steps][10]
-            mean_tourist_preferences_by_factor: tuple[float],  # float[10]
+                tuple[float]]],
+            mean_tourist_preferences_by_factor: tuple[float],
             tourist_preferences_deviation: float,
             availability_by_destination: tuple[float],
-            num_destinations: int = 11,  # > 0
-            num_tourists: int = 10152,  # > 0
-            num_steps: int = 240,  # > 0
+            num_destinations: int = 11,
+            num_tourists: int = 10152,
+            num_steps: int = 50,
             seed: Optional[int] = None,
             track_agents: bool = False):
         """Initialize the model.
@@ -87,20 +89,32 @@ class SustainableTourismModel(Model):
         ----------
         state_by_destination_step_factor : tuple[tuple[tuple[float]]]
             State values for each destination by step and factor.
+            Values must be between 0 and 1, where 0 is the best state and 1 is
+            the worst state.
+            The tuple is a 3D array with dimensions num_destinations x num_steps x 10.
         mean_tourist_preferences_by_factor : tuple[float]
             Mean values for the tourist preferences by factor.
+            Values must be between -1 and 0, where -1 is full aversion and 0 is
+            indifference.
+            The tuple has 10 elements, one for each factor.
         tourist_preferences_deviation : float
             Standard deviation of the tourist preferences.
         availability_by_destination : tuple[float]
             Availability value for each destination.
+            Values must be between 0 and 1, indicating the probability of the
+            destination being available.
+            The tuple has num_destinations elements.
         num_destinations: int
-            Number of tourist destinations.
+            Number of tourist destinations (default to 11).
         num_tourists: int
-            Number of tourists agents.
+            Number of tourists agents (default to 10152).
         num_steps: int
-            Number of simulation steps.
+            Number of simulation steps (default to 50).
         seed: Optional[int]
             Random seed for the random number generator.
+        track_agents: bool
+            Flag indicating if the agents should be tracked by the
+            datacollector (default to False).
         """
 
         # Initialize model attributes
@@ -115,7 +129,7 @@ class SustainableTourismModel(Model):
         self.__create_destinations(state_by_destination_step_factor,
                                    availability_by_destination)
 
-        # Create tourists' scheduler with two stages
+        # Create tourists' scheduler to activate them in random order
         self.schedule: RandomActivation = RandomActivation(self)
 
         # Create tourists
@@ -156,6 +170,14 @@ class SustainableTourismModel(Model):
         ----------
         state_by_destination_step_factor : tuple[tuple[tuple[float]]]
             State values for each destination by step and factor.
+            Values must be between 0 and 1, where 0 is the best state and 1 is
+            the worst state.
+            The tuple is a 3D array with dimensions num_destinations x num_steps x 10.
+        availability_by_destination : tuple[float]
+            Availability value for each destination.
+            Values must be between 0 and 1, indicating the probability of the
+            destination being available.
+            The tuple has num_destinations elements.
         """
 
         for i, state in enumerate(np.array(state_by_destination_step_factor)):
@@ -175,6 +197,9 @@ class SustainableTourismModel(Model):
         ----------
         mean_tourist_preferences_by_factor : tuple[float]
             Mean values for the tourist preferences by factor.
+            Values must be between -1 and 0, where -1 is full aversion and 0 is
+            indifference.
+            The tuple has 10 elements, one for each factor.
         tourist_preferences_deviation : float
             Standard deviation of the tourist preferences.
         """
@@ -260,7 +285,6 @@ class Tourist(Agent):
     """Class representing a tourist agent.
 
     An agent tourist travels to a destination after choosing it.
-    -1 value for the destination means that the tourist is not traveling.
 
     Attributes
     ----------
@@ -269,13 +293,13 @@ class Tourist(Agent):
     model : SustainableTourismModel
         Model where the tourist operates.
     current_destination : int
-        Destination of the tourist in the current step.
+        Identifier of the current destination of the tourist.
     preferences : np.ndarray
         Preference values of the tourist for each factor.
     """
 
     def __init__(self, unique_id: int, model: SustainableTourismModel,
-                 preferences: np.ndarray):  # float[10]
+                 preferences: np.ndarray):
         super().__init__(unique_id, model)
 
         self.current_destination: int = -1
