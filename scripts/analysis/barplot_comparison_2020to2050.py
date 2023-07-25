@@ -57,8 +57,8 @@ with open(output_file) as json_file:
 
 fig = results.transpose().plot.bar(rot=0, figsize=(10, 5))
 fig.set_ylabel('Share')
-fig.set_xlabel('Destination')
-fig.set_title(f'Share per destination in {instance_name} configuration\n')
+# fig.set_xlabel('Destination')
+# fig.set_title(f'Share per destination in {instance_name} configuration\n')
 
 # Save figure
 figure_path = f'{plot_folder}{instance_name}_2020to2050_barplot_comparison.png'
@@ -73,10 +73,10 @@ fig = difference.plot.bar(rot=0, figsize=(10, 5), width=0.9,
                           color=['red' if val < 0 else 'blue' for val in
                                  difference])
 fig.set_ylabel('Share difference')
-fig.set_xlabel('Destination')
-fig.set_title(
-    f'Share difference per destination between 2020 and 2049 in '
-    f'{instance_name} configuration\n')
+# fig.set_xlabel('Destination')
+# fig.set_title(
+#     f'Share difference per destination between 2020 and 2049 in '
+#     f'{instance_name} configuration\n')
 
 for i, val in enumerate(difference):
     if val >= 0:

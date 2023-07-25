@@ -48,6 +48,10 @@ history_path = 'data/base_data/history_arrivals.csv'
 plot_folder = 'data/results/instances_output/plots/'
 solutions = [f'calibrated_{rcp}', rcp]
 
+# Process rcp to get name. E.g. rcp26 -> RCP 2.6
+rcp_name = rcp.upper().replace('RCP', 'RCP ')
+rcp_name = re.sub(r'(\d)(\d)', r'\1.\2', rcp_name)
+
 ###############################################################################
 
 # 1. Load history data
@@ -72,13 +76,15 @@ for solution in solutions:
     config_share = get_experiment_total_share(output_file, destinations)
     total_shares = total_shares.join(config_share.rename(solution))
 
-total_shares.columns = ['History', 'Calibrated Solution', 'Initial Solution']
+total_shares.columns = ['Historical real share',
+                        f'Calibrated model ({rcp_name})',
+                        f'Initial model ({rcp_name})']
 
 # Build figure for given parameter config
 fig = total_shares.plot.bar(rot=0, figsize=(10, 5))
 fig.set_ylabel('Total share (2010-2019)')
-fig.set_xlabel('Destination')
-fig.set_title(f'Total share per destination\n')
+# fig.set_xlabel('Destination')
+# fig.set_title(f'Total share per destination\n')
 
 # Save figure
 figure_path = f'{plot_folder}{rcp}_calibration_barplot_comparison.png'
