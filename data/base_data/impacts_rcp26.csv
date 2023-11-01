@@ -1,0 +1,111 @@
+Impact,Destination,2000,2050,2100
+Infectious diseases,Canary,45,55,65
+Infectious diseases,Balearic,66.1,66.8,69.2
+Infectious diseases,Crete,74.8,76.2,76.2
+Infectious diseases,Cyprus,68.7,71,69.4
+Infectious diseases,Malta,62.9,69.7,67.5
+Infectious diseases,Madeira,45,55,65
+Infectious diseases,Corsica,84.9,87.2,89.9
+Infectious diseases,Sicily,83.7,85.4,86.1
+Infectious diseases,Sardinia,87.1,87.2,90.2
+Infectious diseases,Antillas,70,80,85
+Infectious diseases,Azores,45,57,68
+Heat waves,Canary,6.4,11.5,12.7
+Heat waves,Balearic,52.9,67.7,66.1
+Heat waves,Crete,31.3,48.4,51
+Heat waves,Cyprus,92.1,112.4,114
+Heat waves,Malta,48.1,66.7,67.7
+Heat waves,Madeira,0.2,0.6,0.8
+Heat waves,Corsica,14.4,27.1,27.1
+Heat waves,Sicily,52,68.5,70.1
+Heat waves,Sardinia,49.7,65.3,64
+Heat waves,Antillas,59.7,70.2,80.5
+Heat waves,Azores,16.3,27.15,35.18
+Beaches availability,Canary,0,0.38,0.48
+Beaches availability,Balearic,0,0.34,0.45
+Beaches availability,Crete,0,0.27,0.38
+Beaches availability,Cyprus,0,0.22,0.3
+Beaches availability,Malta,0,0.28,0.4
+Beaches availability,Madeira,0,0.48,0.57
+Beaches availability,Corsica,0,0.23,0.38
+Beaches availability,Sicily,0,0.24,0.34
+Beaches availability,Sardinia,0,0.25,0.46
+Beaches availability,Antillas,0,0.35,0.46
+Beaches availability,Azores,0,0.53,0.62
+Water shortages,Canary,0,1.4,1.5
+Water shortages,Balearic,0,0.8,0.6
+Water shortages,Crete,0,0.8,0.8
+Water shortages,Cyprus,0,0.8,0.8
+Water shortages,Malta,0,0.8,0.9
+Water shortages,Madeira,0,0.8,0.7
+Water shortages,Corsica,0,0.3,0.1
+Water shortages,Sicily,0,0.6,0.6
+Water shortages,Sardinia,0,0.4,0.2
+Water shortages,Antillas,0,0.9,1.2
+Water shortages,Azores,0,0.5,0.6
+Forest fires,Canary,0.58,0.58,0.58
+Forest fires,Balearic,0.3,0.38,0.4
+Forest fires,Crete,0.45,0.5,0.55
+Forest fires,Cyprus,0.45,0.55,0.6
+Forest fires,Malta,0.3,0.3,0.35
+Forest fires,Madeira,0.35,0.35,0.4
+Forest fires,Corsica,0.25,0.4,0.45
+Forest fires,Sicily,0.4,0.5,0.55
+Forest fires,Sardinia,0.35,0.4,0.5
+Forest fires,Antillas,0.3,0.35,0.4
+Forest fires,Azores,0.38,0.57,0.6
+Marine habitats,Canary,0,0,0
+Marine habitats,Balearic,0,0,4.85230024209749E-05
+Marine habitats,Crete,0,0,0
+Marine habitats,Cyprus,0,0,0
+Marine habitats,Malta,0,0,0
+Marine habitats,Madeira,0,0,0
+Marine habitats,Corsica,0,0,0
+Marine habitats,Sicily,0,0,0
+Marine habitats,Sardinia,0,0,0
+Marine habitats,Antillas,0,0,0
+Marine habitats,Azores,0,0,0
+Land habitats,Canary,0,0.5,0.5
+Land habitats,Balearic,0,0.5,1
+Land habitats,Crete,0,0.5,0.5
+Land habitats,Cyprus,0,0.5,1
+Land habitats,Malta,0,0.5,1
+Land habitats,Madeira,0,0.5,0.5
+Land habitats,Corsica,0,0.5,1
+Land habitats,Sicily,0,0.5,0.5
+Land habitats,Sardinia,0,0.5,1
+Land habitats,Antillas,0,0.5,0.5
+Land habitats,Azores,0,0.5,1
+Infrastructure damage,Canary,0,1,1
+Infrastructure damage,Balearic,0,0.5,1
+Infrastructure damage,Crete,0,0.5,0.5
+Infrastructure damage,Cyprus,0,0.5,1
+Infrastructure damage,Malta,0,0.5,0.5
+Infrastructure damage,Madeira,0,0.5,0.5
+Infrastructure damage,Corsica,0,0.5,0.5
+Infrastructure damage,Sicily,0,0.5,1
+Infrastructure damage,Sardinia,0,0.5,0.5
+Infrastructure damage,Antillas,0,0.5,0.5
+Infrastructure damage,Azores,0,0.5,0.5
+Cultural heritage damage,Canary,0,0.5,0.5
+Cultural heritage damage,Balearic,0,0.5,0.5
+Cultural heritage damage,Crete,0,0.5,1
+Cultural heritage damage,Cyprus,0,0.5,0.5
+Cultural heritage damage,Malta,0,0.5,0.5
+Cultural heritage damage,Madeira,0,0.5,0.5
+Cultural heritage damage,Corsica,0,0.5,0.5
+Cultural heritage damage,Sicily,0,0.5,1
+Cultural heritage damage,Sardinia,0,0.5,0.5
+Cultural heritage damage,Antillas,0,0.5,0.5
+Cultural heritage damage,Azores,0,0.5,0.5
+Attractiveness,Canary,0,0.1001,0.1264
+Attractiveness,Balearic,0,0.0814,0.1071
+Attractiveness,Crete,0,0.1121,0.1554
+Attractiveness,Cyprus,0,0.1369,0.1763
+Attractiveness,Malta,0,0.1031,0.1419
+Attractiveness,Madeira,0,0.1435,0.1702
+Attractiveness,Corsica,0,0.1025,0.155
+Attractiveness,Sicily,0,0.0724,0.1006
+Attractiveness,Sardinia,0,0.1117,0.1564
+Attractiveness,Antillas,0,0.1275,0.146
+Attractiveness,Azores,0,0.2062,0.254
